@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <arg name="use_sim_time" default="false" />
+
+  <set_parameter name="use_sim_time" value="$(var use_sim_time)" />
+
+  <node pkg="test_diagnostics" exec="test_clock_publisher.py" name="test_clock_publisher_py" output="screen"/>
+  <node pkg="test_diagnostics" exec="test_publisher" name="test_publisher" output="screen"/>
+  <node pkg="test_diagnostics" exec="test_updater" name="test_updater" output="screen"/>
+
+  <node pkg="diagnostic_aggregator" exec="aggregator_node" name="aggregator_node" output="screen" args="--ros-args --log-level WARN">
+    <param from="$(find-pkg-share test_diagnostics)/config/diagnostic_aggregator.param.yaml" />
+  </node>
+</launch>
